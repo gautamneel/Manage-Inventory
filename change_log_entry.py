@@ -5,9 +5,7 @@ from app_utilities import save_file_df, FILE_MAP, FIELD_ID_MAP, ID_VALUE_MAP,get
 from main_page import draw_grid
 # To do: tabs for: create quote, delete quote, edit quote and all quotes overview
 import pandas as pd
-from st_aggrid import AgGrid
-from st_aggrid.grid_options_builder import GridOptionsBuilder
-from st_aggrid.shared import GridUpdateMode, JsCode, DataReturnMode
+
 def get_next_val(df,val=None):
 
     if len(df)==0:
@@ -15,7 +13,6 @@ def get_next_val(df,val=None):
     else:
 
         max_id = df[f'{val}'].apply(lambda x: int(x.split('-')[1])).max()
-        print('id isssssssssssssssssssss',f'{ID_VALUE_MAP[val]}-{max_id+1}')
         return f'{ID_VALUE_MAP[val]}-{max_id+1}'
 
 def callback():

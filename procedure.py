@@ -3,8 +3,8 @@ import datetime
 import os
 import streamlit as st
 from edit_entry import edit_dialog
+import os
 
-from main_new import get_new_entry
 from app_utilities import get_file_df
 from app_utilities import save_file_df, FILE_MAP
 # To do: tabs for: create quote, delete quote, edit quote and all quotes overview
@@ -12,7 +12,7 @@ import pandas as pd
 from st_aggrid import AgGrid
 from st_aggrid.grid_options_builder import GridOptionsBuilder
 from st_aggrid.shared import GridUpdateMode, JsCode, DataReturnMode
-
+username = os.getlogin()
 
 def get_file_from_local(policy_value=None):
     file_path = fr'C:\Users\ngautam\Brookfield\UK PRT UK Users - Documents\01. Corporate\03. Policies\1B BAC UK Credit Risk Policy June 2024.pdf'
@@ -49,7 +49,6 @@ def draw_grid_pr(choice,df,field=None):
     )
 
     selected_rows = edited_df[edited_df.Select]
-    print('ppppppppppppppppp',selected_rows)
     selected_rows = selected_rows.drop('Select', axis=1)
     if not isinstance(selected_rows, type(None)):
         if not selected_rows.empty:
@@ -69,112 +68,3 @@ def draw_grid_pr(choice,df,field=None):
 
         if st.button('New'):
             get_new_entry(choice, df)
-
-
-        '''if 'edit_mode' in st.session_state and st.session_state.edit_mode:
-
-            for i in range(st.session_state.selected_rows.shape[0]):
-                st.write(f'Editing Row----------------------- :{i + 1}')
-                row = st.session_state.selected_rows.iloc[i]
-                print('*****', row)
-                edited_data = {}
-
-                for key in row.index:
-                    if key != 'Procedure number':
-                        if key == 'Approval date':
-                            edited_data[key] = st.date_input(f'{key}:', value=str(row[key]), key=f'{i}-{key}')
-                        else:
-                            edited_data[key] = st.text_input(f'{key}:', value=str(row[key]), key=f'{i}-{key}')
-                print('eeeeeeeeeeeeeeeeee', edited_data)
-                print(edited_data.keys())
-                if st.button('Save Changes', key=f'save-{choice}'):
-                    print('hhhhhhhhhhhhhhh')
-                    print('rrrrrrrrrrrrrrrrrrrrrrrrrrr', row["Procedure number"])
-                    print(st.session_state.df)
-                    index = row["Procedure number"]
-                    for col in edited_data.keys():
-                        st.session_state.df.loc[st.session_state.df['Procedure number'] == index, col] = edited_data[
-                            col]
-                    print('bbbbbbbbbbbbbbbbbb', st.session_state.df)
-                    print('ffffffffffffff', FILE_MAP[f'{choice}'])
-                    save_file_df(st.session_state.df, FILE_MAP[f'{choice}'])
-                    st.success('updated successfully')
-                    st.session_state.edit_mode = False
-                    st.rerun()'''
-
-
-    '''st.markdown("""
-                    <style>
-                    sidebar .sidebar-content {
-                         max-width:100%;
-                        background-color: #111 !important;
-                    }
-                    </style>
-                        """, unsafe_allow_html=True)
-    print('session df isssssssssssssssssssssssss',df)
-
-    # Configure Ag-Grid options
-    gb = GridOptionsBuilder.from_dataframe(df)
-    gb.configure_selection(selection_mode='multiple', use_checkbox=True)
-    gb.configure_column('Approval date',cellEditor='agDateCellEditor',
-                        cellEditorParams={'maxValidYear': 2050, 'minValidYear': 1980})
-
-    response = AgGrid(
-        df,
-        width=100,
-        fit_columns_on_grid_load=True,
-        gridOptions=gb.build(),
-
-        update_mode=GridUpdateMode.SELECTION_CHANGED | GridUpdateMode.VALUE_CHANGED,
-        data_return_mode=DataReturnMode.AS_INPUT,
-        theme ='streamlit',
-
-    )
-    selected_rows = response["selected_rows"]
-    print('sssssssssssssssss',selected_rows)
-
-
-
-    #st.write(df)
-    if not isinstance(selected_rows, type(None)):
-        if not selected_rows.empty:
-
-            st.write('selected rows--------------------------')
-
-            if st.button('Edit'):
-                st.session_state.edit_mode = True
-                st.session_state.selected_rows = selected_rows
-        if 'edit_mode' in st.session_state and st.session_state.edit_mode:
-
-            for i in range(st.session_state.selected_rows.shape[0]):
-                st.write(f'Editing Row----------------------- :{i + 1}')
-                row = st.session_state.selected_rows.iloc[i]
-                print('*****', row)
-                edited_data = {}
-
-                for key in row.index:
-                    if key != 'Procedure number':
-                        if key =='Approval date':
-                            edited_data[key] = st.date_input(f'{key}:', value=str(row[key]), key=f'{i}-{key}')
-                        else:
-                            edited_data[key] = st.text_input(f'{key}:', value=str(row[key]), key=f'{i}-{key}')
-                print('eeeeeeeeeeeeeeeeee', edited_data)
-                print(edited_data.keys())
-                if st.button('Save Changes', key=f'save-{choice}'):
-                    print('hhhhhhhhhhhhhhh')
-                    print('rrrrrrrrrrrrrrrrrrrrrrrrrrr',row["Procedure number"])
-                    print(st.session_state.df)
-                    index = row["Procedure number"]
-                    for col in edited_data.keys():
-                        st.session_state.df.loc[st.session_state.df['Procedure number'] == index, col] = edited_data[col]
-                    print('bbbbbbbbbbbbbbbbbb', st.session_state.df)
-                    print('ffffffffffffff', FILE_MAP[f'{choice}'])
-                    save_file_df(st.session_state.df, FILE_MAP[f'{choice}'])
-                    st.success('updated successfully')
-                    st.session_state.edit_mode = False
-                    st.rerun()'''
-
-
-
-
-
