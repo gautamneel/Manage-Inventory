@@ -2,7 +2,7 @@ import pandas as pd
 import datetime
 import streamlit as st
 from app_utilities import save_file_df, FILE_MAP, FIELD_ID_MAP
-
+from new_entry import get_new_entry
 
 MAX_TABLE_HEIGHT = 1500
 
